@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เสียงซอดนตรีไทย</title>
+  <style media="screen">
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap');
+    body {
+      font-family: 'Sarabun', sans-serif;
+      text-align: center;
+    }
+    button {
+      background-color: aqua;
+      width: 50px;
+      height: 50px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h4>หัดเทียบเสียงซอดนตรีไทย</h4>
+  <button id="Bb4" value="466.16">ด</button>
+  <button id="F5" value="698.46">ซ</button>
+  <button id="C6" value="1046.50">รํ</button>
+  <button id="stop">หยุด</button>
+  <br>
+  <br>
+  <br>
+  <input type="range" id="myPitch" min="50" max="1500" step="1" value="90" oninput="myTrainingPitch()">
+  <p>Value: <output id="value"></output></p>
+  <script type="text/javascript">
+  const value = document.querySelector("#value");
+  const input = document.querySelector("#myPitch");
+  value.textContent = input.value;
+  input.addEventListener("input", (event) => {
+    value.textContent = event.target.value;
+  });
+
+
+  const context = new AudioContext();
+  const stop = document.getElementById("stop");
+  const oscBb4 = document.getElementById("Bb4");
+  const oscF5 = document.getElementById("F5");
+  const oscC6 = document.getElementById("C6");
+
+  const contextMyPitch = new AudioContext();
+
+  function myTrainingPitch() {
+    let myPitch = document.getElementById('myPitch').value;
+    console.log('MYPITCH', myPitch)
+    oscillator = context.createOscillator();
+    oscillator.type = "sawtooth";
+    oscillator.frequency.value = myPitch;
+    oscillator.connect(context.destination);
+    oscillator.start(context.currentTime)
+    oscillator.stop(context.currentTime + 3)
+  }
+
+
+  oscBb4.onclick = function() {
+    let oscPitch = document.getElementById('Bb4').value;
+    oscillator = context.createOscillator();
+    oscillator.type = "sawtooth";
+    oscillator.frequency.value = oscPitch;
+    oscillator.connect(context.destination);
+    oscillator.start(context.currentTime)
+  }
+    oscF5.onclick = function() {
+      let oscPitch = document.getElementById('F5').value; //assigning the value of the slider to a variable
+      oscillator = context.createOscillator(); //creates oscillator
+      oscillator.type = "sawtooth"; //chooses the type of wave
+      oscillator.frequency.value = oscPitch; //assigning the value of oscPitch to the oscillators frequency value
+      oscillator.connect(context.destination); //sends to output
+      oscillator.start(context.currentTime) //starts the sound at the current time
+    }
+
+    oscC6.onclick = function() {
+      let oscPitch = document.getElementById('C6').value; //assigning the value of the slider to a variable
+      oscillator = context.createOscillator(); //creates oscillator
+      oscillator.type = "sawtooth"; //chooses the type of wave
+      oscillator.frequency.value = oscPitch; //assigning the value of oscPitch to the oscillators frequency value
+      oscillator.connect(context.destination); //sends to output
+      oscillator.start(context.currentTime) //starts the sound at the current time
+    }
+
+
+    stop.onclick = function() {
+      oscillator.disconnect() //disconnects the oscillator
+    }
+  </script>
+</body>
+
+</html>
